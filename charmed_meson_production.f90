@@ -99,7 +99,7 @@
     !write(15, 98)
     !write(16, 98)
     !---------------------------------calculate Jpsi begin-------------------------------------------
-    open(unit = 11, file = "dNptdpt_Jpsi_vT0_0001_TT.dat", status = "unknown")
+    open(unit = 11, file = "dNptdpt_Jpsi_c020_276_2nd.dat", status = "unknown")
     write(11, 108)
     phigh=20.00
     plow=0.05
@@ -242,11 +242,12 @@
     real*8 Ir, Ii, Kr, Ki, Kr2
     DOUBLE PRECISION I0r(1),I0i(1),K1r(1),K1i(1),K1r2(1)
     integer ierr, nz
-    !for J/psi vT=tanh(etaT)=0.3c,  gamc=0.26        eta=0.30952
-    !for D0    vT=tanh(etaT)=0.42c, gamc=0.26        eta=0.447692
+    !200 GeV for J/psi vT=tanh(etaT)=0.3c,  gamc=0.26        eta=0.30952
+    !200 GeV for D0    vT=tanh(etaT)=0.42c, gamc=0.26        eta=0.447692
 
     gaml=1.d0
-    gamc=0.26d0
+    gamc=0.26d0!200 GeV
+    gamc=1.2d0
     gams=0.8d0
 
 
@@ -256,14 +257,14 @@
     mc=1.5
     M_T=Sqrt(m_h**2+pt**2)
     tau=25.34d0
-    A_T=(45.6d0)**2*pi
+    A_T=(45.61d0)**2*pi
     x=0.5d0!wavefunction**2 = delta(x-0.5) for J/psi
     
     !----------------free parameters for TT/TS (v_T=tanh eta_T)-----------------------------
-    Ir=sinh(0.30952)*pt/T                                                       !for 2.76 TeV(vT=0.3)
+    Ir=sinh(0.100335)*pt/T                                                       !for 2.76 TeV(vT=0.1)
     !Ir=sinh(0.30952)*pt/T                                                  !for 200 GeV(vT=0.3)
     Ii=0.d0
-    Kr=cosh(0.30952)*(Sqrt(mc**2+(x*pt)**2)+Sqrt(mc**2+((1-x)*pt)**2))/T        !for 2.76 TeV(vT=0.3)
+    Kr=cosh(0.100335)*(Sqrt(mc**2+(x*pt)**2)+Sqrt(mc**2+((1-x)*pt)**2))/T        !for 2.76 TeV(vT=0.1)
     !Kr=cosh(0.30952)*(Sqrt(mc**2+(x*pt)**2)+Sqrt(mc**2+((1-x)*pt)**2))/T   !for 200 GeV(vT=0.3)
     Ki=0.d0
     !----------------free parameters for TT/TS (v_T=tanh eta_T)-----------------------------
@@ -271,7 +272,7 @@
     call ZBESI(Ir,Ii,0.d0,1,1,I0r,I0i,nz,ierr)
     call ZBESK(Kr,Ki,0.d0,1,1,K1r,K1i,nz,ierr)
 	
-	meson_TT = C_M*M_T*tau*A_T/(2*pi)**3*gamc*gamc*I0r(1)*K1r(1)!over
+	meson_TT = C_M*M_T*tau*A_T/(2*pi)**3*2*gamc*gamc*I0r(1)*K1r(1)!over
 	
 !-------------------------------------------	
     elseif(IDmeson.eq.2)then ! for D0
@@ -343,14 +344,15 @@
 
     C_M=(2*3)**2
     g=6
-    gamc=0.26
+    gamc=1.2!2.76 TeV
+    !gamc=0.26!200 GeV
     gaml=1.0
     gams=0.8
     resu=0.d0
 !------------------------------------------------------------	
 	if(IDmeson .eq.1)then !for J/psi
 
-	meson_TS = (1-dexp(-pt/2.0))*C_M/g/gamc*    &
+	meson_TS = (1-dexp(-pt/2.0))*C_M/g/gamc*2*    &
     (S_j(pt/2.0,IDP)*Thermal(pt/2.0,IDP2)+S_j(pt/2.0,IDP2)*Thermal(pt/2.0,IDP))
 	
 !------------------------------------------------
@@ -569,11 +571,14 @@
     if((IDP .eq. 8) .or. (IDP .eq. 9))then !c,cbar
         m_h=1.5
         m_T=Sqrt(m_h**2+pt**2)
-        Ir=sinh(0.30952)*pt/T
+        Ir=sinh(0.1)*pt/T!2.76 TeV
+        !Ir=sinh(0.30952)*pt/T!200 GeV
         Ii=0.d0
-        Kr=cosh(0.30952)*m_T/T
+        Kr=cosh(0.1)*m_T/T!2.76 TeV
+        !Kr=cosh(0.30952)*m_T/T!200 GeV
         Ki=0.d0
-        gama=0.26
+        gama=1.2!2.76 TeV
+        !gama=0.26!200 GeV
     elseif((IDP .eq. 6) .or. (IDP .eq. 7))then !s,sbar
         m_h=0.46
         m_T=Sqrt(m_h**2+pt**2)
@@ -797,7 +802,7 @@
             S_j=S_j+( int_Sj(pt,fa+q,IDP2)+int_Sj(pt,fa+q+(fb-fa)/1000,IDP2) )*(fb-fa)/1000/2
         enddo
     endif
-    S_j=(S_j)
+    S_j=S_j
     
     !test--------------------------------
     !call FFPTS(3.0d0,50.0d0,int_Sj,0.000001,S_j,IDP2,3.0d0)
@@ -816,22 +821,20 @@
     double precision int_Sj
     integer IDP
     
-    if(IDP .eq. 8)then!S_c
+    if(IDP .eq. 8)then!S_c from g/c
         int_Sj = (Fiq(q, 8)*S_ij(pt/q, 8, 8)+ Fiq(q, 5)*S_ij(pt/q, 5,8))/q
-    elseif(IDP .eq. 9)then!S_cbar
+    elseif(IDP .eq. 9)then!S_cbar from g/c
         int_Sj = (Fiq(q, 8)*S_ij(pt/q, 8, 9)+ Fiq(q, 5)*S_ij(pt/q, 5,9))/q
-    elseif(IDP .eq. 3)then!S_ubar
+    elseif(IDP .eq. 3)then!S_ubar from light(bar)/g
         int_Sj =( Fiq(q, 1)*S_ij(pt/q, 1, 3)+ Fiq(q, 2)*S_ij(pt/q, 2, 3)  &
                 + Fiq(q, 3)*S_ij(pt/q, 3, 3)+ Fiq(q, 4)*S_ij(pt/q, 4, 3)  &
                 + Fiq(q, 5)*S_ij(pt/q, 5, 3) )/q
-    elseif(IDP .eq. 7)then!S_sbar
+    elseif(IDP .eq. 7)then!S_sbar from light(bar)/g/s(bar)
         int_Sj =( Fiq(q, 1)*S_ij(pt/q, 1, 7)+ Fiq(q, 2)*S_ij(pt/q, 2, 7)  &
                 + Fiq(q, 3)*S_ij(pt/q, 3, 7)+ Fiq(q, 4)*S_ij(pt/q, 4, 7)  &
                 + Fiq(q, 5)*S_ij(pt/q, 5, 7)+ Fiq(q, 6)*S_ij(pt/q, 6, 7)  &
                 + Fiq(q, 7)*S_ij(pt/q, 7, 7))/q
-        !int_Sj =( Fiq(q, 1)*S_ij(pt/q, 1, 7)+ Fiq(q, 2)*S_ij(pt/q, 2, 7)  &
-        !        + Fiq(q, 3)*S_ij(pt/q, 3, 7)+ Fiq(q, 4)*S_ij(pt/q, 4, 7)  &
-        !        + Fiq(q, 5)*S_ij(pt/q, 5, 7) )/q
+        
     endif
 
     return
@@ -1160,26 +1163,26 @@
     return
     end!function f1ik(k,IDP)!f'ik end
     
-    function Fiq(q,IDP)
+    function Fiq(q,IDP)!with energy
     implicit none
     external f1ik!f'ik
     double precision q, fsum, f1ik
     real*8  Fiq
     real*8  bL
-    integer IDP
+    integer IDP,i
 
     if(IDP.eq.5)then
         bL=2.9
     elseif(IDP.eq.8 .or. IDP.eq.9)then
-!        bL=0.01!for Jpsi bL=0.01 while for D meson bL=2.39, the same as light quark 
-        bL=2.39
+        bL=0.01!for Jpsi bL=0.01 while for D meson bL=2.39, the same as light quark 
+!        bL=2.39
     elseif(IDP.eq.1 .or. IDP.eq.2 .or. IDP.eq.3 .or. IDP.eq.4 .or. IDP.eq.6.or. IDP.eq.7)then
         bL=2.39
     endif
     
+    fsum=0.d0
     call integral(q,q*dexp(bL),f1ik,0.000001,fsum,IDP)
     Fiq = 1/bL*fsum
-    
     return
     end!Fiq(q,IDP) end
     
@@ -1295,22 +1298,23 @@
     integer IDP
     
     if(IDP.eq.5)then
-        bL=2.39
-        !bL=2.9 !for gluon
+        !bL=2.39
+        bL=2.9 !for gluon
     elseif(IDP.eq.8 .or. IDP.eq.9)then
-    !    bL=0.01
-        bL=2.39
+        bL=0.01!for Jpsi bL=0.01 while for D meson bL=2.39, the same as light quark 
+    !    bL=2.39
     elseif(IDP.eq.1 .or. IDP.eq.2 .or. IDP.eq.3 .or. IDP.eq.4 .or. IDP.eq.6.or. IDP.eq.7)then
         bL=2.39
     endif
     
+    fsum=0.d0
     call integral(q,q*dexp(bL),int_fik,0.000001,fsum,IDP)
     F1iq = 1/bL*fsum
 
     return
     end!F1iq(q,IDP) end
     
-    function int_fik(k,IDP)!!!!!!!!!!!!!!!!!fik or flik?????????
+    function int_fik(k,IDP)
     implicit none
     external fik
     double precision int_fik, fik
