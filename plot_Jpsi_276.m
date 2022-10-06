@@ -1,5 +1,5 @@
 clc;clear;close all
-mat=readtable('dNptdpt_Jpsi_c020_276_2nd.dat');
+mat=readtable('dNptdpt_Jpsi_c020_276.dat');
 mat=table2array(mat);
 %%
 pt_Exper=[0.25 0.75 1.25 1.75 2.25 2.75 3.25 3.75 4.25 4.75 5.25 5.75 7];
@@ -11,7 +11,7 @@ pt=double(mat(:,1));
 TT=mat(:,2);
 TS=mat(:,3);
 SS=mat(:,4);
-SS2j=mat(:,5)*0.1;
+SS2j=mat(:,5);
 Total=TT+TS+SS+SS2j;
 %%
 figure;
@@ -46,7 +46,7 @@ hold on
 xlim([0,20])
  ylim([10^-10,10^-1])
 xlabel('p_T(GeV/c)');xticks(0:20);
-ylabel('d^2N/p_Tdp_Tdy(GeV/c)^{-2}');yticks([10^-10,10^-8,10^-6,10^-4,10^-3,10^-2,10^-1]);
+ylabel('d^2N/p_Tdp_Tdy(GeV/c)^{-2}');yticks([10^-15,10^-10,10^-8,10^-6,10^-5,10^-4,10^-3,10^-2,10^-1]);
 legend('ALICE J/\psi@2.76 TeV','sum','therml-thermal','thermal-shower','shower-shower','shower-shower(2j)')
 ax.FontName='Times New Roman';
 ax.FontSize=12;
