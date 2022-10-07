@@ -1,5 +1,5 @@
 clc;clear;close all
-mat=readtable('dNptdpt_Jpsi_c020_55.dat');
+mat=readtable('dNptdpt_Jpsi_c020_55_final.dat');
 mat=table2array(mat);
 %%
 pt=double(mat(:,1));

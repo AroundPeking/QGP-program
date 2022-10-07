@@ -424,8 +424,8 @@
 	if(IDmeson .eq.1)then !for J/psi
 	!call FFPTS(fa,fb,int_SS,0.000001,fsum,IDmeson,pt)
     do i=1,1000
-        q=fa+i*(fb-fa)/1000
-        fsum=fsum+( int_SS(pt,q,IDmeson)+int_SS(pt,q+(fb-fa)/1000,IDmeson) )*(fb-fa)/1000/2
+        q=fa+i*(fb-fa)/1000.
+        fsum=fsum+( int_SS(pt,q,IDmeson)+int_SS(pt,q+(fb-fa)/1000.,IDmeson) )*(fb-fa)/1000./2.
     enddo
 	meson_SS = (1-dexp(-pt/2.0))*(fsum)/p0
 	!(1-dexp(-pt/2.0))*   S_j(pt/2,8)*S_j(pt/2,9)
@@ -474,7 +474,7 @@
 	real*8 meson_SS2j
 	real*8 pt,q1, q2, k1, k2, m_h,p0,tmp
 	integer IDP1, IDP2, IDmeson,i, j
-    double precision fa,fb,fsum, int_SS2j
+    double precision fa,fb,fsum,fsum1,fsum2, int_SS2j
     
     if((IDmeson .eq. 1))then !jpsi
         m_h=3.097
@@ -485,6 +485,8 @@
     endif
     p0=Sqrt(m_h**2+pt**2)
     fsum=0.0d0
+    fsum1=0.0d0
+    fsum2=0.0d0
 
 	if(IDmeson .eq.1)then !for J/psi
         fa=2.7!the cutoff
@@ -492,18 +494,22 @@
         if(pt.gt.fa) then
             tmp= pt
             fa = tmp
-            fb = 30.0
         endif
     
-    do i=1,100
-        q1=fa+i*(fb-fa)/100
-        q2=q1+(fb-fa)/100
-        do j=1,100
-            k1=fa+j*(fb-fa)/100
-            k2=k1+(fb-fa)/100
-            fsum=fsum+( int_SS2j(pt,q1,k1,IDmeson)+   &
-                        int_SS2j(pt,q2,k2,IDmeson) )*(fb-fa)/100/2
+    do i=1,200
+        q1=fa+i*(fb-fa)/200.
+        q2=q1+(fb-fa)/200.
+        do j=1,200
+            k1=fa+j*(fb-fa)/200.
+            k2=k1+(fb-fa)/200.
+            fsum1=fsum1+( int_SS2j(pt,q1,k1,IDmeson)+   &
+                          int_SS2j(pt,q1,k2,IDmeson) )*(fb-fa)/200./2.
+            fsum2=fsum2+( int_SS2j(pt,q2,k1,IDmeson)+   &
+                          int_SS2j(pt,q2,k2,IDmeson) )*(fb-fa)/200./2.
         enddo
+        fsum=fsum+(fsum1+fsum2)/2.*(fb-fa)/200.
+        fsum1=0.0d0
+        fsum2=0.0d0
     enddo
     
 	meson_SS2j = (1-dexp(-pt/2.0))*(fsum)/p0/pt*10.**(-2)
@@ -553,7 +559,7 @@
     endif
     
 	return
-    end ! end meson_SS
+    end ! end meson_SS(2j)
 !---------------------------------------------------
 !---------------------------------------------------
     function Thermal(pt, IDP)
@@ -1203,10 +1209,10 @@
     endif
     
     fsum=0.d0
-    do i=1,100
-            q1=q+i*(q*exp(bL)-q)/100
-            tmp=q1+(q*exp(bL)-q)/100
-            fsum=fsum+(f1ik(q1,IDP)+f1ik(tmp,IDP))/2*(q*exp(bL)-q)/100
+    do i=1,500
+            q1=q+i*(q*exp(bL)-q)/500.
+            tmp=q1+(q*exp(bL)-q)/500.
+            fsum=fsum+(f1ik(q1,IDP)+f1ik(tmp,IDP))/2*(q*exp(bL)-q)/500.
     enddo
     Fiq = 1/bL*fsum
     return
@@ -1328,16 +1334,16 @@
         bL=2.9 !for gluon
     elseif(IDP.eq.8 .or. IDP.eq.9)then
         bL=0.01!for Jpsi bL=0.01 while for D meson bL=2.39, the same as light quark 
-    !    bL=2.39
+        !bL=2.39
     elseif(IDP.eq.1 .or. IDP.eq.2 .or. IDP.eq.3 .or. IDP.eq.4 .or. IDP.eq.6.or. IDP.eq.7)then
         bL=2.39
     endif
     
     fsum=0.d0
-    do i=1,100
-            q1=q+i*(q*exp(bL)-q)/100
-            tmp=q1+(q*exp(bL)-q)/100
-            fsum=fsum+(int_fik(q1,IDP)+int_fik(tmp,IDP))/2*(q*exp(bL)-q)/100
+    do i=1,500
+            q1=q+i*(q*exp(bL)-q)/500.
+            tmp=q1+(q*exp(bL)-q)/500.
+            fsum=fsum+(int_fik(q1,IDP)+int_fik(tmp,IDP))/2.*(q*exp(bL)-q)/500.
     enddo
     F1iq = 1/bL*fsum
 
@@ -1356,9 +1362,9 @@
     
     function int_SS2j(pt, q, k,IDmeson)!SS2j for integral, q=q and k=q'
     implicit none 
-    external S_ij, F1iq, int_fss
+    external S_ij, F1iq, int_fss,Fiq
     real*8 S_ij, int_fss, p2, p2_next
-    double precision  F1iq, fsum, pt, q, k, int_SS2j
+    double precision  F1iq, fsum, pt, q, k, int_SS2j,Fiq
     real*8 fs1s5, fs2s5, fs3s5, fs4s5, fs5s5, fs6s5, fs7s5,  fs1s8, fs2s8, fs3s8, fs4s8, fs5s8, fs6s8,fs7s8
     integer IDmeson,i
 
@@ -1380,6 +1386,10 @@
     
     if(IDmeson.eq.1)then!Jpsi
         !sum over i=c/g, i'=c/g, totally 4 terms
+        !int_SS2j = Fiq(q, 8)*Fiq(k, 8)*S_ij(pt/2/q,8,8)*S_ij(pt/2/k,8,9)+ &
+        !           Fiq(q, 5)*Fiq(k, 8)*S_ij(pt/2/q,5,8)*S_ij(pt/2/k,8,9)+ &
+        !           Fiq(q, 8)*Fiq(k, 5)*S_ij(pt/2/q,8,8)*S_ij(pt/2/k,5,9)+ &
+        !           Fiq(q, 5)*Fiq(k, 5)*S_ij(pt/2/q,5,8)*S_ij(pt/2/k,5,9)
         int_SS2j = F1iq(q, 8)*F1iq(k, 8)*S_ij(pt/2/q,8,8)*S_ij(pt/2/k,8,9)+ &
                    F1iq(q, 5)*F1iq(k, 8)*S_ij(pt/2/q,5,8)*S_ij(pt/2/k,8,9)+ &
                    F1iq(q, 8)*F1iq(k, 5)*S_ij(pt/2/q,8,8)*S_ij(pt/2/k,5,9)+ &
