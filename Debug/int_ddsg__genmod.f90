@@ -1,4 +1,4 @@
-        !COMPILER-GENERATED INTERFACE MODULE: Fri Oct  7 18:14:38 2022
+        !COMPILER-GENERATED INTERFACE MODULE: Tue Oct 11 20:43:14 2022
         ! This source file is for reference only and may not completely
         ! represent the generated interface used by the compiler.
         MODULE INT_DDSG__genmod

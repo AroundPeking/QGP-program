@@ -99,11 +99,11 @@
     !write(15, 98)
     !write(16, 98)
     !---------------------------------calculate Jpsi begin-------------------------------------------
-    open(unit = 11, file = "dNptdpt_Jpsi_c020_55.dat", status = "unknown")
+    open(unit = 11, file = "dNptdpt_Jpsi_c020_276.dat", status = "unknown")
     write(11, 108)
     phigh=20.00
-    plow=10.00
-    N=20
+    plow=0.05
+    N=50
     do i = 1, N
 	    pt = plow+(i-1)*(phigh-plow)/N
         dNptdpt(1)  = meson_TT(pt, 8, 9, 1) 
@@ -236,8 +236,8 @@
 	real*8 pt
 	integer IDP1, IDP2, IDmeson, i
     double precision :: pi=3.141592653589793D0
-	real*8 gamc, gams, gaml
-    real*8 :: C_M=(2*3)**2, T=0.175
+	real*8 gamc, gams, gaml, T
+    real*8 :: C_M=(2*3)**2
     real*8 x, M_T, m_h, tau, A_T, mc, mu, ms, resu, q,tmp
     real*8 Ir, Ii, Kr, Ki, Kr2
     DOUBLE PRECISION I0r(1),I0i(1),K1r(1),K1i(1),K1r2(1)
@@ -247,26 +247,25 @@
 
     gaml=1.d0
     !gamc=0.26d0!200 GeV
-    !gamc=1.2d0!test for 2.76 TeV
-    gamc=0.26d0
+    gamc=0.26d0!test for 2.76 TeV
     gams=0.8d0
-
+    T=0.188!J/psi
 
 !----------------------------------------------	
 	if(IDmeson.eq.1)then ! for J/psi
     m_h=3.097
-    mc=1.5
+    mc=1.28
     M_T=Sqrt(m_h**2+pt**2)
     tau=25.34d0
     A_T=(45.61d0)**2*pi
     x=0.5d0!wavefunction**2 = delta(x-0.5) for J/psi
     
     !----------------free parameters for TT/TS (v_T=tanh eta_T)-----------------------------
-    !Ir=sinh(0.100335)*pt/T                                                       !test for 2.76 TeV(vT=0.1)
-    Ir=sinh(0.30952)*pt/T                                                  !for 200 GeV and 5.5 TeV(vT=0.3)
+    Ir=sinh(0.320545)*pt/T                                                       !test for 2.76 TeV(vT=0.1)
+    !Ir=sinh(0.30952)*pt/T                                                  !for 200 GeV and 5.5 TeV(vT=0.3)
     Ii=0.d0
-    !Kr=cosh(0.100335)*(Sqrt(mc**2+(x*pt)**2)+Sqrt(mc**2+((1-x)*pt)**2))/T        !test for 2.76 TeV(vT=0.1)
-    Kr=cosh(0.30952)*(Sqrt(mc**2+(x*pt)**2)+Sqrt(mc**2+((1-x)*pt)**2))/T   !for 200 GeV(vT=0.3)
+    Kr=cosh(0.320545)*(Sqrt(mc**2+(x*pt)**2)+Sqrt(mc**2+((1-x)*pt)**2))/T        !test for 2.76 TeV(vT=0.1)
+    !Kr=cosh(0.30952)*(Sqrt(mc**2+(x*pt)**2)+Sqrt(mc**2+((1-x)*pt)**2))/T   !for 200 GeV(vT=0.3)
     Ki=0.d0
     !----------------free parameters for TT/TS (v_T=tanh eta_T)-----------------------------
     
@@ -345,7 +344,7 @@
 
     C_M=(2*3)**2
     g=6
-    gamc=1.2!2.76 TeV
+    gamc=0.26!2.76 TeV
     !gamc=0.26!200 GeV
     gaml=1.0
     gams=0.8
@@ -572,20 +571,20 @@
     real*8 Ir, Ii, Kr, Ki
     DOUBLE PRECISION I0r(1),I0i(1),K1r(1),K1i(1)
     integer ierr, nz
-    T=0.175
+    T=0.188
     !for J/psi vT=tanh(etaT)=0.3c,  gamc=0.26        eta=0.30952
     !for D0    vT=tanh(etaT)=0.42c, gamc=0.26        eta=0.447692
     if((IDP .eq. 8) .or. (IDP .eq. 9))then !c,cbar
-        m_h=1.5
+        m_h=1.28
         m_T=Sqrt(m_h**2+pt**2)
-        !Ir=sinh(0.1)*pt/T!test for 2.76 TeV
-        Ir=sinh(0.30952)*pt/T!200 GeV
+        Ir=sinh(0.320545)*pt/T!test for 2.76 TeV
+        !Ir=sinh(0.30952)*pt/T!200 GeV
         Ii=0.d0
-        !Kr=cosh(0.1)*m_T/T!test for 2.76 TeV
-        Kr=cosh(0.30952)*m_T/T!200 GeV
+        Kr=cosh(0.320545)*m_T/T!test for 2.76 TeV
+        !Kr=cosh(0.30952)*m_T/T!200 GeV
         Ki=0.d0
-        !gama=1.2!2.76 TeV
-        gama=0.26!200 GeV and 5.5 TeV
+        gama=0.26!2.76 TeV
+        !gama=0.26!200 GeV and 5.5 TeV
     elseif((IDP .eq. 6) .or. (IDP .eq. 7))then !s,sbar
         m_h=0.46
         m_T=Sqrt(m_h**2+pt**2)
@@ -918,95 +917,106 @@
 !    return
 !    end!function fik(k,IDP) end
     
-!    function fik(k,IDP)!PbPb@2.76 TeV at LHC
-!    implicit none
-!    real*8 Ai, ki, ni
-!    double precision k, fik
-!    integer IDP
-! 	select case(IDP)
-!! u quark		
-!	case(1)
-!	
-!	Ai = 1.138d4
-!	ki = 0.687d0
-!	ni = 5.67d0
-!	
-!	fik = 2.5d0*Ai/(1.0d0+k/ki)**ni
-!! d quark		
-!	case(2)
-!	
-!	Ai = 1.266d4
-!	ki = 0.677d0
-!	ni = 5.66d0
-!	
-!	fik = 2.5d0*Ai/(1.0d0+k/ki)**ni
-!! ubar quark		
-!	case(3)
-!	
-!	Ai = 0.24d4
-!	ki = 0.87d0
-!	ni = 5.97d0
-!	
-!	fik = 2.5d0*Ai/(1.0d0+k/ki)**ni
-!! dbar quark		
-!	case(4)
-!	
-!	Ai = 0.23d4
-!	ki = 0.88d0
-!	ni = 5.99d0
-!	
-!	fik = 2.5d0*Ai/(1.0d0+k/ki)**ni
-!! gluon		
-!	case(5)
-!	
-!	Ai = 6.2d4
-!	ki = 0.98d0
-!	ni = 6.22d0
-!	
-!	fik = 2.5d0*Ai/(1.0d0+k/ki)**ni
-!! s, sbar quark			
-!	case(6, 7)
-!	
-!	Ai = 0.093d4
-!	ki = 1.05d0
-!	ni = 6.12d0
-!	
-!	fik = 2.5d0*Ai/(1.0d0+k/ki)**ni
-!! c, cbar quark by linear relation between fik and sNN, interpolating between 5.5 and 0.2 TeV.
-!    case(8, 9)
-!        
-!    !fik = (2497*(1 +                                 &
-!    !        39.37226/k**5.5))/                       &
-!    !    (k*(1 + 16/(0.1 + k)**2)) +                  &
-!    !   0.51698*                                      &
-!    !    ((19.2*(1 + k**2/36.))/                      &
-!    !       ((1 + Exp(0.9 - 2*k))*                    &
-!    !         (1 + 0.27027*k)**12)                    &
-!    !        - (2497*                                 &  
-!    !         (1 + 39.37226/k**5.5))                  &
-!    !        /(k*(1 + 16/(0.1 + k)**2)))!fik vs s_NN
-!            
-!    fik = (201.5857*(0.1 + k)**2*                   &
-!          ((1 + k**2/36.)/                          &
-!             ((1 + 2.4596/Exp(2*k))*                &
-!               (1 + 0.27027*k)**12)                 &
-!             )**0.51698*                            &
-!          (39.37226 + k**5.5))/                     &
-!        (k**6.5*((1 +                               &
-!               39.37226/k**5.5)/                    &
-!             (k + (16.*k)/(0.1 + k)**2))**          &
-!           0.51698*                                 &
-!          (16.01 + k*(0.2 + k)))! ln fik vs s_NN
-!
-!	case default
-!	
-!	print *, "Need to check the parton IDP in fik"
-!	stop
-!
-!    end select
-!
-!    return
-!    end!function fik(k,IDP) end
+    function fik(k,IDP)!PbPb@2.76 TeV at LHC
+    implicit none
+    real*8 Ai, ki, ni
+    double precision k, fik
+    integer IDP
+ 	select case(IDP)
+! u quark		
+	case(1)
+	
+	Ai = 1.138d4
+	ki = 0.687d0
+	ni = 5.67d0
+	
+	fik = 2.5d0*Ai/(1.0d0+k/ki)**ni
+! d quark		
+	case(2)
+	
+	Ai = 1.266d4
+	ki = 0.677d0
+	ni = 5.66d0
+	
+	fik = 2.5d0*Ai/(1.0d0+k/ki)**ni
+! ubar quark		
+	case(3)
+	
+	Ai = 0.24d4
+	ki = 0.87d0
+	ni = 5.97d0
+	
+	fik = 2.5d0*Ai/(1.0d0+k/ki)**ni
+! dbar quark		
+	case(4)
+	
+	Ai = 0.23d4
+	ki = 0.88d0
+	ni = 5.99d0
+	
+	fik = 2.5d0*Ai/(1.0d0+k/ki)**ni
+! gluon		
+	case(5)
+	
+	Ai = 6.2d4
+	ki = 0.98d0
+	ni = 6.22d0
+	
+	fik = 2.5d0*Ai/(1.0d0+k/ki)**ni
+! s, sbar quark			
+	case(6, 7)
+	
+	Ai = 0.093d4
+	ki = 1.05d0
+	ni = 6.12d0
+	
+	fik = 2.5d0*Ai/(1.0d0+k/ki)**ni
+! c, cbar quark by linear relation between fik and sNN, interpolating between 5.5 and 0.2 TeV.
+    case(8, 9)
+        
+    !fik = (2497*(1 +                                 &
+    !        39.37226/k**5.5))/                       &
+    !    (k*(1 + 16/(0.1 + k)**2)) +                  &
+    !   0.51698*                                      &
+    !    ((19.2*(1 + k**2/36.))/                      &
+    !       ((1 + Exp(0.9 - 2*k))*                    &
+    !         (1 + 0.27027*k)**12)                    &
+    !        - (2497*                                 &  
+    !         (1 + 39.37226/k**5.5))                  &
+    !        /(k*(1 + 16/(0.1 + k)**2)))!fik vs s_NN
+            
+    !fik = (201.5857*(0.1 + k)**2*                   &
+    !      ((1 + k**2/36.)/                          &
+    !         ((1 + 2.4596/Exp(2*k))*                &
+    !           (1 + 0.27027*k)**12)                 &
+    !         )**0.51698*                            &
+    !      (39.37226 + k**5.5))/                     &
+    !    (k**6.5*((1 +                               &
+    !           39.37226/k**5.5)/                    &
+    !         (k + (16.*k)/(0.1 + k)**2))**          &
+    !       0.51698*                                 &
+    !      (16.01 + k*(0.2 + k)))! ln fik vs s_NN
+        
+      fik =  (134.57*(0.1 + k)**2*                  &
+         ((1 + k**2/36.)/                           &
+            ((1 + 2.4596/Exp(2*k))*                 &
+              (1 + 0.27027*k)**12                   &
+              ))**0.6*                              &
+         (39.37226 + k**5.5))/                      &
+       (k**6.5*((1 +                                &
+              39.37226/k**5.5)/                     &
+            (k + (16.*k)/(0.1 + k)**2))**0.6*       &
+         (16.01 + k*(0.2 + k)))!0.2 weight=0.6     5.5 weight=0.4
+
+	case default
+	
+	print *, "Need to check the parton IDP in fik"
+	stop
+
+    end select
+
+    return
+    end!function fik(k,IDP) end
     
 !    function fik(k,IDP)!PbPb@5.02 TeV at LHC
 !    implicit none
@@ -1098,73 +1108,73 @@
 !    return
 !    end!function fik(k,IDP) end
 
-    function fik(k,IDP)!PbPb@5.5 TeV at LHC
-    implicit none
-    real*8 Ai, ki, ni
-    double precision k, fik
-    integer IDP
- 	select case(IDP)
-! u quark		
-	case(1)
-	
-	Ai = 2.209d4
-	ki = 0.5635d0
-	ni = 5.240d0
-	
-	fik = 2.5d0*Ai/(1.0d0+k/ki)**ni
-! d quark		
-	case(2)
-	
-	Ai = 2.493d4
-	ki = 0.5522d0
-	ni = 5.223d0
-	
-	fik = 2.5d0*Ai/(1.0d0+k/ki)**ni
-! ubar quark		
-	case(3)
-	
-	Ai = 4.581d3
-	ki = 0.7248d0
-	ni = 5.437d0
-	
-	fik = 2.5d0*Ai/(1.0d0+k/ki)**ni
-! dbar quark		
-	case(4)
-	
-	Ai = 4.317d3
-	ki = 0.7343d0
-	ni = 5.448d0
-	
-	fik = 2.5d0*Ai/(1.0d0+k/ki)**ni
-! gluon		
-	case(5)
-	
-	Ai = 1.229d5
-	ki = 0.7717d0
-	ni = 5.600d0
-	
-	fik = 2.5d0*Ai/(1.0d0+k/ki)**ni
-! s, sbar quark			
-	case(6, 7)
-	
-	Ai = 1.662d3
-	ki = 0.9064d0
-	ni = 5.548d0
-	
-	fik = 2.5d0*Ai/(1.0d0+k/ki)**ni
-! c, cbar quark in Ref.meson_fik_charm_5.5
-    case(8, 9)
-    
-    fik = 2497*(1+k/1.95)**(-5.5)*(   k*(1+(4/(1+dexp(0.1+k)))**2)     )**(-1)
-	case default
-	
-	print *, "Need to check the parton IDP in fik"
-	stop
-
-    end select
-
-    return
-    end!function fik(k,IDP) end
+!    function fik(k,IDP)!PbPb@5.5 TeV at LHC
+!    implicit none
+!    real*8 Ai, ki, ni
+!    double precision k, fik
+!    integer IDP
+! 	select case(IDP)
+!! u quark		
+!	case(1)
+!	
+!	Ai = 2.209d4
+!	ki = 0.5635d0
+!	ni = 5.240d0
+!	
+!	fik = 2.5d0*Ai/(1.0d0+k/ki)**ni
+!! d quark		
+!	case(2)
+!	
+!	Ai = 2.493d4
+!	ki = 0.5522d0
+!	ni = 5.223d0
+!	
+!	fik = 2.5d0*Ai/(1.0d0+k/ki)**ni
+!! ubar quark		
+!	case(3)
+!	
+!	Ai = 4.581d3
+!	ki = 0.7248d0
+!	ni = 5.437d0
+!	
+!	fik = 2.5d0*Ai/(1.0d0+k/ki)**ni
+!! dbar quark		
+!	case(4)
+!	
+!	Ai = 4.317d3
+!	ki = 0.7343d0
+!	ni = 5.448d0
+!	
+!	fik = 2.5d0*Ai/(1.0d0+k/ki)**ni
+!! gluon		
+!	case(5)
+!	
+!	Ai = 1.229d5
+!	ki = 0.7717d0
+!	ni = 5.600d0
+!	
+!	fik = 2.5d0*Ai/(1.0d0+k/ki)**ni
+!! s, sbar quark			
+!	case(6, 7)
+!	
+!	Ai = 1.662d3
+!	ki = 0.9064d0
+!	ni = 5.548d0
+!	
+!	fik = 2.5d0*Ai/(1.0d0+k/ki)**ni
+!! c, cbar quark in Ref.meson_fik_charm_5.5
+!    case(8, 9)
+!    
+!    fik = 2497*(1+k/1.95)**(-5.5)*(   k*(1+(4/(1+dexp(0.1+k)))**2)     )**(-1)
+!	case default
+!	
+!	print *, "Need to check the parton IDP in fik"
+!	stop
+!
+!    end select
+!
+!    return
+!    end!function fik(k,IDP) end
     
     
     function f1ik(k,IDP)!f'ik
