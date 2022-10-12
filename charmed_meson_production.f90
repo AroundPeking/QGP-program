@@ -103,7 +103,7 @@
     write(11, 108)
     phigh=20.00
     plow=0.05
-    N=50
+    N=20
     do i = 1, N
 	    pt = plow+(i-1)*(phigh-plow)/N
         dNptdpt(1)  = meson_TT(pt, 8, 9, 1) 
@@ -249,7 +249,7 @@
     !gamc=0.26d0!200 GeV
     gamc=0.26d0!test for 2.76 TeV
     gams=0.8d0
-    T=0.188!J/psi
+    T=0.185!J/psi
 
 !----------------------------------------------	
 	if(IDmeson.eq.1)then ! for J/psi
@@ -261,10 +261,10 @@
     x=0.5d0!wavefunction**2 = delta(x-0.5) for J/psi
     
     !----------------free parameters for TT/TS (v_T=tanh eta_T)-----------------------------
-    Ir=sinh(0.320545)*pt/T                                                       !test for 2.76 TeV(vT=0.1)
+    Ir=sinh(0.255413)*pt/T                                                       !test for 2.76 TeV(vT=0.1)
     !Ir=sinh(0.30952)*pt/T                                                  !for 200 GeV and 5.5 TeV(vT=0.3)
     Ii=0.d0
-    Kr=cosh(0.320545)*(Sqrt(mc**2+(x*pt)**2)+Sqrt(mc**2+((1-x)*pt)**2))/T        !test for 2.76 TeV(vT=0.1)
+    Kr=cosh(0.255413)*(Sqrt(mc**2+(x*pt)**2)+Sqrt(mc**2+((1-x)*pt)**2))/T        !test for 2.76 TeV(vT=0.1)
     !Kr=cosh(0.30952)*(Sqrt(mc**2+(x*pt)**2)+Sqrt(mc**2+((1-x)*pt)**2))/T   !for 200 GeV(vT=0.3)
     Ki=0.d0
     !----------------free parameters for TT/TS (v_T=tanh eta_T)-----------------------------
@@ -279,8 +279,8 @@
     m_h=1.8
     M_T=Sqrt(m_h**2+pt**2)
     tau=25.34d0
-    A_T=(45.6d0)**2*pi
-    mc=1.5
+    A_T=(45.61d0)**2*pi
+    mc=1.28
     mu=0.26
 
     resu=0.d0
@@ -305,8 +305,8 @@
 	m_h=1.96
     M_T=Sqrt(m_h**2+pt**2)
     tau=25.34d0
-    A_T=(45.6d0)**2*pi
-    mc=1.5
+    A_T=(45.61d0)**2*pi
+    mc=1.28
     ms=0.46
 
     resu=0.d0
@@ -571,16 +571,16 @@
     real*8 Ir, Ii, Kr, Ki
     DOUBLE PRECISION I0r(1),I0i(1),K1r(1),K1i(1)
     integer ierr, nz
-    T=0.188
+    T=0.185
     !for J/psi vT=tanh(etaT)=0.3c,  gamc=0.26        eta=0.30952
     !for D0    vT=tanh(etaT)=0.42c, gamc=0.26        eta=0.447692
     if((IDP .eq. 8) .or. (IDP .eq. 9))then !c,cbar
         m_h=1.28
         m_T=Sqrt(m_h**2+pt**2)
-        Ir=sinh(0.320545)*pt/T!test for 2.76 TeV
+        Ir=sinh(0.255413)*pt/T!test for 2.76 TeV
         !Ir=sinh(0.30952)*pt/T!200 GeV
         Ii=0.d0
-        Kr=cosh(0.320545)*m_T/T!test for 2.76 TeV
+        Kr=cosh(0.255413)*m_T/T!test for 2.76 TeV
         !Kr=cosh(0.30952)*m_T/T!200 GeV
         Ki=0.d0
         gama=0.26!2.76 TeV
