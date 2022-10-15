@@ -1,5 +1,5 @@
 clc;clear;close all
-mat=readtable('dNptdpt_D0_c020_276_1st.dat');
+mat=readtable('dNptdpt_D0_c020_276.dat');
 mat=table2array(mat);
 %%
 pt_Exper=[1.5 2.5 3.5 4.5 5.5 7 10 14 20];
@@ -10,7 +10,7 @@ TT=mat(:,2);
 TS=mat(:,3);
 SS=mat(:,4);
 SS2j=mat(:,5);
-Total=TT+TS+SS+SS2j;
+Total=(TT+TS+SS+SS2j);
 %%
 figure;
 ax=axes;
