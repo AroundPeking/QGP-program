@@ -1,5 +1,5 @@
 clc;clear;close all
-mat=readtable('dNptdpt_D0_c020_276.dat');
+mat=readtable('dNptdpt_D0_c020_276_final.dat');
 mat=table2array(mat);
 %%
 pt_Exper=[1.5 2.5 3.5 4.5 5.5 7 10 14 20];

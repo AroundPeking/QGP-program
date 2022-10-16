@@ -117,44 +117,49 @@
     !!---------------------------------calculate Jpsi end-------------------------------------------
     
     !---------------------------------calculate D0 begin---------------------------------------------
-    open(unit = 18, file = "dNptdpt_D0_c020_276.dat", status = "unknown")
-    write(18, 108)
-    phigh=20.00
-    plow=0.05
-    N=20
-    do i = 1, N
-	    pt = plow+(i-1)*(phigh-plow)/N
-        dNptdpt(1)  = meson_TT(pt, 8, 3, 2) 
-        write(*,*)pt, dNptdpt(1)
-	    dNptdpt(2)  = meson_TS(pt, 8, 3, 2) 
-        write(*,*)pt, dNptdpt(2)
-	    dNptdpt(3)  = meson_SS(pt, 8, 3, 2) 
-        write(*,*)pt, dNptdpt(3)
-	    dNptdpt(4)  = meson_SS2j(pt, 8, 3, 2)
-        write(*,*)pt, dNptdpt(4)
-	    dNptdpt(5)  = dNptdpt(1)+dNptdpt(2)+dNptdpt(3)+dNptdpt(4)
-        
-        write(18, 110) pt, dNptdpt(1:5)
-        write(*, *) pt, dNptdpt(5)
-    enddo
+    !open(unit = 18, file = "dNptdpt_D0_c020_276.dat", status = "unknown")
+    !write(18, 108)
+    !phigh=20.00
+    !plow=0.05
+    !N=20
+    !do i = 1, N
+	   ! pt = plow+(i-1)*(phigh-plow)/N
+    !    dNptdpt(1)  = meson_TT(pt, 8, 3, 2) 
+    !    write(*,*)pt, dNptdpt(1)
+	   ! dNptdpt(2)  = meson_TS(pt, 8, 3, 2) 
+    !    write(*,*)pt, dNptdpt(2)
+	   ! dNptdpt(3)  = meson_SS(pt, 8, 3, 2) 
+    !    write(*,*)pt, dNptdpt(3)
+	   ! dNptdpt(4)  = meson_SS2j(pt, 8, 3, 2)
+    !    write(*,*)pt, dNptdpt(4)
+	   ! dNptdpt(5)  = dNptdpt(1)+dNptdpt(2)+dNptdpt(3)+dNptdpt(4)
+    !    
+    !    write(18, 110) pt, dNptdpt(1:5)
+    !    write(*, *) pt, dNptdpt(5)
+    !enddo
     !!---------------------------------calculate D0 end---------------------------------------------
     
     !---------------------------------calculate Ds begin---------------------------------------------
-    !open(unit = 22, file = "dNptdpt_Ds_c020_276.dat", status = "unknown")
-    !write(22, 108)
-    !phigh=20.00
-    !plow=0.1
-    !N=100
-    !do i = 1, N
-	   ! pt = plow+(i-1)*(phigh-plow)/N
-    !    dNptdpt(1)  = meson_TT(pt, 8, 7, 3) 
-	   ! dNptdpt(2)  = meson_TS(pt, 8, 7, 3) 
-	   ! dNptdpt(3)  = meson_SS(pt, 8, 7, 3) 
-	   ! dNptdpt(4)  = meson_SS2j(pt, 8, 7, 3)
-	   ! dNptdpt(5)  = dNptdpt(1)+dNptdpt(2)+dNptdpt(3)+dNptdpt(4)
-    !    
-    !    write(22, 110) pt, dNptdpt(1:5)
-    !enddo
+    open(unit = 22, file = "dNptdpt_Ds_c020_276.dat", status = "unknown")
+    write(22, 108)
+    phigh=20.00
+    plow=0.1
+    N=20
+    do i = 1, N
+	    pt = plow+(i-1)*(phigh-plow)/N
+        dNptdpt(1)  = meson_TT(pt, 8, 7, 3) 
+        write(*,*)pt, dNptdpt(1)
+	    dNptdpt(2)  = meson_TS(pt, 8, 7, 3) 
+        write(*,*)pt, dNptdpt(2)
+	    dNptdpt(3)  = meson_SS(pt, 8, 7, 3) 
+        write(*,*)pt, dNptdpt(3)
+	    dNptdpt(4)  = meson_SS2j(pt, 8, 7, 3)
+        write(*,*)pt, dNptdpt(4)
+	    dNptdpt(5)  = dNptdpt(1)+dNptdpt(2)+dNptdpt(3)+dNptdpt(4)
+        write(*,*)pt, dNptdpt(5)
+        
+        write(22, 110) pt, dNptdpt(1:5)
+    enddo
     !---------------------------------calculate Ds end---------------------------------------------
     
     !write(14, 110) pt, Thermal(pt, 1)
@@ -292,10 +297,10 @@
 		do i=1,1000
             x=i*(1.-0.)/1000
             tmp=x+(1.-0.)/1000
-            Ir=sinh(0.459897)*pt/T
+            Ir=sinh(0.388423)*pt/T
             Ii=0.d0
-            Kr=cosh(0.459897)*(Sqrt(mu**2+(x*pt)**2)+Sqrt(mc**2+((1-x)*pt)**2))/T
-            Kr2=cosh(0.459897)*(Sqrt(mu**2+(tmp*pt)**2)+Sqrt(mc**2+((1-tmp)*pt)**2))/T
+            Kr=cosh(0.388423)*(Sqrt(mu**2+(x*pt)**2)+Sqrt(mc**2+((1-x)*pt)**2))/T
+            Kr2=cosh(0.388423)*(Sqrt(mu**2+(tmp*pt)**2)+Sqrt(mc**2+((1-tmp)*pt)**2))/T
             Ki=0.d0
             call ZBESI(Ir,Ii,0.d0,1,1,I0r,I0i,nz,ierr)
             call ZBESK(Kr,Ki,0.d0,1,1,K1r,K1i,nz,ierr)
@@ -318,10 +323,10 @@
 		do i=1,1000
             x=i*(1.-0.)/1000
             tmp=x+(1.-0.)/1000
-            Ir=sinh(0.447692)*pt/T
+            Ir=sinh(0.30952)*pt/T
             Ii=0.d0
-            Kr=cosh(0.447692)*(Sqrt(ms**2+(x*pt)**2)+Sqrt(mc**2+((1-x)*pt)**2))/T
-            Kr2=cosh(0.447692)*(Sqrt(ms**2+(tmp*pt)**2)+Sqrt(mc**2+((1-tmp)*pt)**2))/T
+            Kr=cosh(0.30952)*(Sqrt(ms**2+(x*pt)**2)+Sqrt(mc**2+((1-x)*pt)**2))/T
+            Kr2=cosh(0.30952)*(Sqrt(ms**2+(tmp*pt)**2)+Sqrt(mc**2+((1-tmp)*pt)**2))/T
             Ki=0.d0
             call ZBESI(Ir,Ii,0.d0,1,1,I0r,I0i,nz,ierr)
             call ZBESK(Kr,Ki,0.d0,1,1,K1r,K1i,nz,ierr)
@@ -591,10 +596,10 @@
     if((IDP .eq. 8) .or. (IDP .eq. 9))then !c,cbar
         m_h=1.28
         m_T=Sqrt(m_h**2+pt**2)
-        Ir=sinh(0.255413)*pt/T!test for 2.76 TeV
+        Ir=sinh(0.30952)*pt/T!test for 2.76 TeV
         !Ir=sinh(0.30952)*pt/T!200 GeV
         Ii=0.d0
-        Kr=cosh(0.255413)*m_T/T!test for 2.76 TeV
+        Kr=cosh(0.30952)*m_T/T!test for 2.76 TeV
         !Kr=cosh(0.30952)*m_T/T!200 GeV
         Ki=0.d0
         gama=0.26!2.76 TeV
@@ -794,7 +799,7 @@
     external int_Sj
     double precision pt, S_j, fa, fb, int_Sj
     real*8 plowlim, phighlim,q!plowlim=0.05,phighlim=6.5
-    plowlim=2.8!3.0 for Ds  !2.8!for D0!  2.8!2.8 for Jpsi!the cutoff 200 GeV
+    plowlim=3.0!3.0 for Ds  !2.8!for D0!  2.8!2.8 for Jpsi!the cutoff 200 GeV
     phighlim=30.0
     fa=plowlim
     fb=phighlim
@@ -852,12 +857,12 @@
     elseif(IDP .eq. 3)then!S_ubar from light(bar)/g
         int_Sj =( Fiq(q, 1)*S_ij(pt/q, 1, 3)+ Fiq(q, 2)*S_ij(pt/q, 2, 3)  &
                 + Fiq(q, 3)*S_ij(pt/q, 3, 3)+ Fiq(q, 4)*S_ij(pt/q, 4, 3)  &
-                + Fiq(q, 5)*S_ij(pt/q, 5, 3) )/q
+                + Fiq(q, 5)*S_ij(pt/q, 5, 3)+ Fiq(q, 8)*S_ij(pt/q, 8, 3))/q
     elseif(IDP .eq. 7)then!S_sbar from light(bar)/g/s(bar)
         int_Sj =( Fiq(q, 1)*S_ij(pt/q, 1, 7)+ Fiq(q, 2)*S_ij(pt/q, 2, 7)  &
                 + Fiq(q, 3)*S_ij(pt/q, 3, 7)+ Fiq(q, 4)*S_ij(pt/q, 4, 7)  &
                 + Fiq(q, 5)*S_ij(pt/q, 5, 7)+ Fiq(q, 6)*S_ij(pt/q, 6, 7)  &
-                + Fiq(q, 7)*S_ij(pt/q, 7, 7))/q
+                + Fiq(q, 7)*S_ij(pt/q, 7, 7)+ Fiq(q, 8)*S_ij(pt/q, 8, 7))/q
         
     endif
 
@@ -1230,15 +1235,15 @@
 
     if(IDP.eq.5)then
         !bL=2.9
-        bL=5.8
+        bL=5.0
     elseif(IDP.eq.8 .or. IDP.eq.9)then
         !bL=0.01!for Jpsi bL=0.01 while for D meson bL=2.39, the same as light quark 
         !bL=2.39!choose the same energy loss factor for charm            fik with energy
-        bL=5.8
+        bL=5.0
     elseif(IDP.eq.1 .or. IDP.eq.2 .or. IDP.eq.3 .or. IDP.eq.4 .or. IDP.eq.6.or. IDP.eq.7)then
         !bL=2.39!2.76 for Jpsi
         !bL=2.39
-        bL=5.8
+        bL=5.0
     endif
     
     fsum=0.d0
@@ -1365,15 +1370,15 @@
     if(IDP.eq.5)then
         !bL=2.39
         !bL=2.9 !for gluon
-        bL=5.8
+        bL=5.0
     elseif(IDP.eq.8 .or. IDP.eq.9)then
         !bL=0.01!for Jpsi bL=0.01 while for D meson bL=2.39, the same as light quark 
         !bL=2.39
-        bL=5.8
+        bL=5.0
     elseif(IDP.eq.1 .or. IDP.eq.2 .or. IDP.eq.3 .or. IDP.eq.4 .or. IDP.eq.6.or. IDP.eq.7)then
         !bL=2.39!2.76 for Jpsi
         !bL=2.39!2.76 D0
-        bL=5.8
+        bL=5.0
     endif
     
     fsum=0.d0
@@ -1464,24 +1469,29 @@
                    F1iq(q, 8)*F1iq(k, 5)*fs8s5+  F1iq(q, 8)*F1iq(k, 8)*fs5s8
         
     elseif(IDmeson.eq.3)then!Ds
-        do i=1,98!dp_2:0-pt
-            p2=i*pt/100
-            p2_next=p2+pt/100
-            fs1s5=fs1s5+(int_fss(pt,q,k,p2,IDmeson,1,5)+int_fss(pt,q,k,p2_next,IDmeson,1,5))/2*pt/100
-            fs2s5=fs2s5+(int_fss(pt,q,k,p2,IDmeson,2,5)+int_fss(pt,q,k,p2_next,IDmeson,2,5))/2*pt/100
-            fs3s5=fs3s5+(int_fss(pt,q,k,p2,IDmeson,3,5)+int_fss(pt,q,k,p2_next,IDmeson,3,5))/2*pt/100
-            fs4s5=fs4s5+(int_fss(pt,q,k,p2,IDmeson,4,5)+int_fss(pt,q,k,p2_next,IDmeson,4,5))/2*pt/100
-            fs5s5=fs5s5+(int_fss(pt,q,k,p2,IDmeson,5,5)+int_fss(pt,q,k,p2_next,IDmeson,5,5))/2*pt/100
-            fs6s5=fs6s5+(int_fss(pt,q,k,p2,IDmeson,6,5)+int_fss(pt,q,k,p2_next,IDmeson,6,5))/2*pt/100
-            fs7s5=fs7s5+(int_fss(pt,q,k,p2,IDmeson,7,5)+int_fss(pt,q,k,p2_next,IDmeson,7,5))/2*pt/100
+        do i=1,198!dp_2:0-pt
+            p2=i*pt/200
+            p2_next=p2+pt/200
+            !fs1s5=fs1s5+(int_fss(pt,q,k,p2,IDmeson,1,5)+int_fss(pt,q,k,p2_next,IDmeson,1,5))/2*pt/200
+            !fs2s5=fs2s5+(int_fss(pt,q,k,p2,IDmeson,2,5)+int_fss(pt,q,k,p2_next,IDmeson,2,5))/2*pt/200
+            !fs3s5=fs3s5+(int_fss(pt,q,k,p2,IDmeson,3,5)+int_fss(pt,q,k,p2_next,IDmeson,3,5))/2*pt/200
+            !fs4s5=fs4s5+(int_fss(pt,q,k,p2,IDmeson,4,5)+int_fss(pt,q,k,p2_next,IDmeson,4,5))/2*pt/200
+            !fs5s5=fs5s5+(int_fss(pt,q,k,p2,IDmeson,5,5)+int_fss(pt,q,k,p2_next,IDmeson,5,5))/2*pt/200
+            !fs6s5=fs6s5+(int_fss(pt,q,k,p2,IDmeson,6,5)+int_fss(pt,q,k,p2_next,IDmeson,6,5))/2*pt/200
+            !fs7s5=fs7s5+(int_fss(pt,q,k,p2,IDmeson,7,5)+int_fss(pt,q,k,p2_next,IDmeson,7,5))/2*pt/200
+            !
+            !fs1s8=fs1s8+(int_fss(pt,q,k,p2,IDmeson,1,8)+int_fss(pt,q,k,p2_next,IDmeson,1,8))/2*pt/200
+            !fs2s8=fs2s8+(int_fss(pt,q,k,p2,IDmeson,2,8)+int_fss(pt,q,k,p2_next,IDmeson,2,8))/2*pt/200
+            !fs3s8=fs3s8+(int_fss(pt,q,k,p2,IDmeson,3,8)+int_fss(pt,q,k,p2_next,IDmeson,3,8))/2*pt/200
+            !fs4s8=fs4s8+(int_fss(pt,q,k,p2,IDmeson,4,8)+int_fss(pt,q,k,p2_next,IDmeson,4,8))/2*pt/200
+            !fs5s8=fs5s8+(int_fss(pt,q,k,p2,IDmeson,5,8)+int_fss(pt,q,k,p2_next,IDmeson,5,8))/2*pt/200
+            !fs6s8=fs6s8+(int_fss(pt,q,k,p2,IDmeson,6,8)+int_fss(pt,q,k,p2_next,IDmeson,6,8))/2*pt/200
+            !fs7s8=fs7s8+(int_fss(pt,q,k,p2,IDmeson,7,8)+int_fss(pt,q,k,p2_next,IDmeson,7,8))/2*pt/200
             
-            fs1s8=fs1s8+(int_fss(pt,q,k,p2,IDmeson,1,8)+int_fss(pt,q,k,p2_next,IDmeson,1,8))/2*pt/100
-            fs2s8=fs2s8+(int_fss(pt,q,k,p2,IDmeson,2,8)+int_fss(pt,q,k,p2_next,IDmeson,2,8))/2*pt/100
-            fs3s8=fs3s8+(int_fss(pt,q,k,p2,IDmeson,3,8)+int_fss(pt,q,k,p2_next,IDmeson,3,8))/2*pt/100
-            fs4s8=fs4s8+(int_fss(pt,q,k,p2,IDmeson,4,8)+int_fss(pt,q,k,p2_next,IDmeson,4,8))/2*pt/100
-            fs5s8=fs5s8+(int_fss(pt,q,k,p2,IDmeson,5,8)+int_fss(pt,q,k,p2_next,IDmeson,5,8))/2*pt/100
-            fs6s8=fs6s8+(int_fss(pt,q,k,p2,IDmeson,6,8)+int_fss(pt,q,k,p2_next,IDmeson,6,8))/2*pt/100
-            fs7s8=fs7s8+(int_fss(pt,q,k,p2,IDmeson,7,8)+int_fss(pt,q,k,p2_next,IDmeson,7,8))/2*pt/100
+            fs5s5=fs5s5+(int_fss(pt,q,k,p2,IDmeson,5,5)+int_fss(pt,q,k,p2_next,IDmeson,5,5))/2*pt/200
+            fs5s8=fs5s8+(int_fss(pt,q,k,p2,IDmeson,5,8)+int_fss(pt,q,k,p2_next,IDmeson,5,8))/2*pt/200
+            fs8s5=fs8s5+(int_fss(pt,q,k,p2,IDmeson,8,5)+int_fss(pt,q,k,p2_next,IDmeson,8,5))/2*pt/200
+            fs8s8=fs8s8+(int_fss(pt,q,k,p2,IDmeson,8,8)+int_fss(pt,q,k,p2_next,IDmeson,8,8))/2*pt/200
             
         enddo
         !sum over i=1-7, i'=c/g, totally 14 terms
